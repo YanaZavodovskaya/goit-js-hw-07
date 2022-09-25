@@ -3,15 +3,18 @@ import { galleryItems } from './gallery-items.js';
 console.log(galleryItems);
 
 const galleryWrapper = document.querySelector('.gallery');
+const createGallery = createGalleryItems(galleryItems);
 
-const galleryIt = galleryItems.forEach((galleryItem) => {
-    console.log(galleryItem);
-    const itemsDiv = [];
-    itemsDiv.push(galleryItem.preview);
+function createGalleryItems(galleryItems) {
+    return galleryItems.map(({preview, original, description}) => {
+        return `
+        <div class="gallery__item"><a class="gallery__link" href="${original}"><img class="gallery__image" alt=${description} src=${preview} data-source=${original} width="350" height="300"/></a></div>
+    `;
+    }).join('');
 
-    galleryWrapper.insertAdjacentHTML('afterbegin', Array(itemsDiv.length).fill(`<div class="gallery__item"><a class="gallery__link" href="${galleryItem.original}"><img class="gallery__image" alt=${galleryItem.description} src=${galleryItem.preview} data-source=${galleryItem.original} width="350" height="300"/></a></div>`).join("")); 
+}
 
-});
+galleryWrapper.insertAdjacentHTML('beforeend', createGallery);
 
 galleryWrapper.addEventListener('click', openOriginImgClick); 
 
