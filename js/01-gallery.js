@@ -19,21 +19,26 @@ galleryWrapper.insertAdjacentHTML('beforeend', createGallery);
 galleryWrapper.addEventListener('click', openOriginImgClick); 
 
 function openOriginImgClick(event) {
-  event.preventDefault();
+    event.preventDefault();
+    if (event.target.nodeName !== 'IMG') {
+        return;
+    }
     const originalImgLink = event.target.dataset.source;
     const originalImgCreate = `<img src="${originalImgLink}" width="100%" height="100%">`
     const instance = basicLightbox.create(originalImgCreate);
 
     instance.show();
+    
+    window.addEventListener("keydown", originalImgClose);     
 
-    window.addEventListener("keydown", originalImgClose);   
     function originalImgClose(event) {
     if (event.code === "Escape") {
     instance.close();
     }
-    window.removeEventListener("keydown", originalImgClose);
+        window.removeEventListener("keydown", originalImgClose);
+       
 }
-
+window.removeEventListener("keydown", openOriginImgClick);
 }
 
 
