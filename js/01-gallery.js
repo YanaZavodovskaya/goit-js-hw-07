@@ -25,10 +25,16 @@ function openOriginImgClick(event) {
     }
     const originalImgLink = event.target.dataset.source;
     const originalImgCreate = `<img src="${originalImgLink}" width="100%" height="100%">`
-    const instance = basicLightbox.create(originalImgCreate);
-
+    const instance = basicLightbox.create(originalImgCreate, {
+        onShow: () => {
+          window.addEventListener("keydown", originalImgClose);
+        },
+        onClose: () => {
+          window.removeEventListener("keydown", originalImgClose);
+        },
+    });        
+      
     instance.show();
-    
     window.addEventListener("keydown", originalImgClose);     
 
     function originalImgClose(event) {
@@ -38,7 +44,6 @@ function openOriginImgClick(event) {
         window.removeEventListener("keydown", originalImgClose);
        
 }
-window.removeEventListener("keydown", openOriginImgClick);
 }
 
 
